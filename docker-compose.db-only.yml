@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:13.1
     volumes:
-      - next-dalle-postgres:/var/lib/postgresql/data
+      - shop-postgres:/var/lib/postgresql/data
     ports:
       - "127.0.0.1:5432:5432"
     command: ["postgres", "-c", "log_statement=all"]
@@ -11,5 +11,5 @@ services:
 
 
 volumes:
-  next-dalle-postgres:
-    name: next-dalle-postgres
+  shop-postgres:
+    name: shop-postgres
