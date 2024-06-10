@@ -19,8 +19,8 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = pgTableCreator((name) => `next-dalle_${name}`);
 
-export const posts = createTable(
-	"post",
+export const items = createTable(
+	"item",
 	{
 		id: serial("id").primaryKey(),
 		name: varchar("name", { length: 256 }),
