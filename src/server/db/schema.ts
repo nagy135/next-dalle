@@ -38,6 +38,8 @@ export const items = createTable(
 	})
 );
 
+export type ItemEntity = typeof items.$inferSelect;
+
 export const users = createTable("user", {
 	id: text("id")
 		.primaryKey()
