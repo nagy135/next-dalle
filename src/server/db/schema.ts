@@ -17,7 +17,7 @@ import { type AdapterAccount } from "next-auth/adapters";
  *
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
-export const createTable = pgTableCreator((name) => `next-dalle_${name}`);
+export const createTable = pgTableCreator((name) => `next-shop_${name}`);
 
 export const items = createTable(
 	"item",
@@ -92,6 +92,7 @@ export const accounts = createTable(
 		provider: varchar("provider", { length: 255 }).notNull(),
 		providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
 		refresh_token: text("refresh_token"),
+		refresh_token_expires_in: integer("refresh_token_expires_in"),
 		access_token: text("access_token"),
 		expires_at: integer("expires_at"),
 		token_type: varchar("token_type", { length: 255 }),
