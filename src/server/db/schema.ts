@@ -24,19 +24,45 @@ export const items = createTable(
 	{
 		id: serial("id").primaryKey(),
 		name: varchar("name", { length: 256 }),
-		createdById: varchar("createdById", { length: 255 })
-			.notNull()
-			.references(() => users.id),
+
+		categoryId: integer("categoryId"),
+
 		createdAt: timestamp("created_at", { withTimezone: true })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
 		updatedAt: timestamp("updatedAt", { withTimezone: true }),
 	},
 	(example) => ({
-		createdByIdIdx: index("createdById_idx").on(example.createdById),
-		nameIndex: index("name_idx").on(example.name),
+		nameIndex: index("items_name_idx").on(example.name),
 	})
 );
+
+export const categories = createTable(
+	"category",
+	{
+		id: serial("id").primaryKey(),
+		name: varchar("name", { length: 256 }),
+
+		createdAt: timestamp("created_at", { withTimezone: true })
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull(),
+		updatedAt: timestamp("updatedAt", { withTimezone: true }),
+	},
+	(example) => ({
+		nameIndex: index("categories_name_idx").on(example.name),
+	})
+);
+
+export const itemsRelations = relations(items, ({ one }) => ({
+	category: one(categories, {
+		fields: [items.categoryId],
+		references: [categories.id],
+	}),
+}))
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+	items: many(items)
+}));
 
 export type ItemEntity = typeof items.$inferSelect;
 
