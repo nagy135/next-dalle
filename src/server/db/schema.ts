@@ -53,6 +53,8 @@ export const categories = createTable(
 	})
 );
 
+export type CategoryEntity = typeof categories.$inferSelect;
+
 export const itemsRelations = relations(items, ({ one }) => ({
 	category: one(categories, {
 		fields: [items.categoryId],
