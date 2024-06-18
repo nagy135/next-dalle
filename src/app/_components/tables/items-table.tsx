@@ -11,7 +11,7 @@ import {
 import { Button } from '~/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { ItemEntity } from '~/server/db/schema';
-import { deleteUser } from '~/lib/actions';
+import { deleteItemById } from '~/lib/actions';
 
 export function ItemsTable({
 	items,
@@ -32,9 +32,9 @@ export function ItemsTable({
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead className="max-w-[150px]">Name</TableHead>
-							<TableHead className="hidden md:table-cell">Email</TableHead>
-							<TableHead className="hidden md:table-cell">Username</TableHead>
+							<TableHead className="max-w-[150px]">#</TableHead>
+							<TableHead className="hidden md:table-cell">Name</TableHead>
+							<TableHead className="hidden md:table-cell">Created at</TableHead>
 							<TableHead></TableHead>
 						</TableRow>
 					</TableHeader>
@@ -60,20 +60,19 @@ export function ItemsTable({
 
 function ItemRow({ item }: { item: ItemEntity }) {
 	const userId = item.id;
-	const deleteUserWithId = deleteUser.bind(null, userId);
+	const deleteItemWithId = deleteItemById.bind(null, userId);
 
 	return (
 		<TableRow>
-			<TableCell className="font-medium">{item.name}</TableCell>
-			<TableCell className="hidden md:table-cell">{item.id}</TableCell>
-			<TableCell>{item.name}</TableCell>
+			<TableCell className="font-medium">{item.id}</TableCell>
+			<TableCell className="hidden md:table-cell">{item.name}</TableCell>
+			<TableCell>{item.createdAt.toDateString()}</TableCell>
 			<TableCell>
 				<Button
 					className="w-full"
 					size="sm"
 					variant="outline"
-					formAction={deleteUserWithId}
-					disabled
+					formAction={deleteItemWithId}
 				>
 					Delete
 				</Button>

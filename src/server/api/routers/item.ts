@@ -1,8 +1,11 @@
+import { eq } from "drizzle-orm";
+import { z } from "zod";
 import {
 	createTRPCRouter,
 	protectedProcedure,
 	publicProcedure,
 } from "~/server/api/trpc";
+import { items } from "~/server/db/schema";
 
 export const itemRouter = createTRPCRouter({
 	getAll: publicProcedure.query(({ ctx }) => {
@@ -11,7 +14,8 @@ export const itemRouter = createTRPCRouter({
 		});
 	}),
 
-	getSecretMessage: protectedProcedure.query(() => {
-		return "you can now see this secret message!";
+	deleteById: protectedProcedure.input(z.number()).mutation(({ ctx, input }) => {
+		return ctx.db.delete(items).where(eq(items.id, input));
 	}),
+
 });

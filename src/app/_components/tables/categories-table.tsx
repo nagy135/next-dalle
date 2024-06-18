@@ -11,7 +11,7 @@ import {
 import { Button } from '~/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { CategoryEntity } from '~/server/db/schema';
-import { deleteUser } from '~/lib/actions';
+import { deleteCategoryById } from '~/lib/actions';
 
 export function CategoriesTable({
 	categories,
@@ -32,9 +32,9 @@ export function CategoriesTable({
 				<Table>
 					<TableHeader>
 						<TableRow>
-							<TableHead className="max-w-[150px]">Name</TableHead>
-							<TableHead className="hidden md:table-cell">Email</TableHead>
-							<TableHead className="hidden md:table-cell">Username</TableHead>
+							<TableHead className="max-w-[150px]">#</TableHead>
+							<TableHead className="hidden md:table-cell">Name</TableHead>
+							<TableHead className="hidden md:table-cell">Created at</TableHead>
 							<TableHead></TableHead>
 						</TableRow>
 					</TableHeader>
@@ -60,20 +60,19 @@ export function CategoriesTable({
 
 function CategoryRow({ category }: { category: CategoryEntity }) {
 	const categoryId = category.id;
-	const deleteUserWithId = deleteUser.bind(null, categoryId);
+	const deleteCategoryWithId = deleteCategoryById.bind(null, categoryId);
 
 	return (
 		<TableRow>
-			<TableCell className="font-medium">{category.name}</TableCell>
-			<TableCell className="hidden md:table-cell">{category.id}</TableCell>
-			<TableCell>{category.name}</TableCell>
+			<TableCell className="font-medium">{category.id}</TableCell>
+			<TableCell className="hidden md:table-cell">{category.name}</TableCell>
+			<TableCell>{category.createdAt.toDateString()}</TableCell>
 			<TableCell>
 				<Button
 					className="w-full"
 					size="sm"
 					variant="outline"
-					formAction={deleteUserWithId}
-					disabled
+					formAction={deleteCategoryWithId}
 				>
 					Delete
 				</Button>
