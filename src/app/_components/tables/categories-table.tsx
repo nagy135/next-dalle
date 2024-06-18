@@ -17,10 +17,31 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "~/components/ui/dialog"
-import { Button } from '~/components/ui/button';
+
+import { Button } from "~/components/ui/button"
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "~/components/ui/form"
+import { Input } from "~/components/ui/input"
 import { useRouter } from 'next/navigation';
 import { CategoryEntity } from '~/server/db/schema';
-import { deleteCategoryById } from '~/lib/actions';
+import { createCategory, deleteCategoryById } from '~/lib/actions';
+import { z } from "zod"
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { useState } from 'react';
+
+const formSchema = z.object({
+	name: z.string().min(2).max(50),
+	parentId: z.number().optional(),
+})
 
 export function CategoriesTable({
 	categories,
@@ -29,27 +50,57 @@ export function CategoriesTable({
 	categories: CategoryEntity[];
 	offset: number | null;
 }) {
+	const [addModalOpen, setAddModalOpen] = useState(false);
+
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			name: "",
+		},
+	})
 	const router = useRouter();
 
 	function onClick() {
 		router.replace(`/?offset=${offset}`);
 	}
 
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		await createCategory(values.name, values.parentId);
+		setAddModalOpen(false);
+	}
+
 	return (
 		<>
 			<div className="flex justify-end my-2">
-				<Dialog>
-					<DialogTrigger>
-						<Button>+</Button>
+				<Dialog open={addModalOpen}>
+					<DialogTrigger asChild>
+						<Button onClick={() => setAddModalOpen(true)}>+</Button>
 					</DialogTrigger>
 					<DialogContent>
 						<DialogHeader>
 							<DialogTitle>Add new category</DialogTitle>
 							<DialogDescription>
-								<form>
-									<input type="text" name="name" placeholder="Category name" />
-									<Button type="submit">Create</Button>
-								</form>
+								<Form {...form}>
+									<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+										<FormField
+											control={form.control}
+											name="name"
+											render={({ field }) => (
+												<FormItem>
+													<FormLabel>Category name</FormLabel>
+													<FormControl>
+														<Input placeholder="toys" {...field} />
+													</FormControl>
+													<FormDescription>
+														This is name of a category.
+													</FormDescription>
+													<FormMessage />
+												</FormItem>
+											)}
+										/>
+										<Button type="submit">Submit</Button>
+									</form>
+								</Form>
 							</DialogDescription>
 						</DialogHeader>
 					</DialogContent>

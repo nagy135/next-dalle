@@ -12,3 +12,8 @@ export async function deleteCategoryById(categoryId: number) {
 	await api.category.deleteById(categoryId);
 	revalidatePath('/');
 }
+
+export async function createCategory(name: string, parentId?: number) {
+	await api.category.create({ name, parentId });
+	revalidatePath('/');
+}

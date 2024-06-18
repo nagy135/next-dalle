@@ -43,6 +43,8 @@ export const categories = createTable(
 		id: serial("id").primaryKey(),
 		name: varchar("name", { length: 256 }),
 
+		parentId: integer("categoryId"),
+
 		createdAt: timestamp("created_at", { withTimezone: true })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
