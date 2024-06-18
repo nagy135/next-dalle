@@ -8,6 +8,15 @@ import {
 	TableBody,
 	Table
 } from '~/components/ui/table';
+
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "~/components/ui/dialog"
 import { Button } from '~/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { CategoryEntity } from '~/server/db/schema';
@@ -28,6 +37,24 @@ export function CategoriesTable({
 
 	return (
 		<>
+			<div className="flex justify-end my-2">
+				<Dialog>
+					<DialogTrigger>
+						<Button>+</Button>
+					</DialogTrigger>
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle>Add new category</DialogTitle>
+							<DialogDescription>
+								<form>
+									<input type="text" name="name" placeholder="Category name" />
+									<Button type="submit">Create</Button>
+								</form>
+							</DialogDescription>
+						</DialogHeader>
+					</DialogContent>
+				</Dialog>
+			</div>
 			<form className="border shadow-sm rounded-lg">
 				<Table>
 					<TableHeader>
