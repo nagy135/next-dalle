@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
-import type { ItemEntity } from '~/server/db/schema';
+import type { ItemWithCategoryEntity } from '~/server/db/schema';
 
-const ItemCard = ({ item }: { item: ItemEntity }) => {
+const ItemCard = ({ item }: { item: ItemWithCategoryEntity }) => {
 	return (
 		<Card>
 			<CardHeader>
@@ -10,7 +10,7 @@ const ItemCard = ({ item }: { item: ItemEntity }) => {
 				<CardDescription>{item.createdAt.toISOString()}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<p>img</p>
+				<p>category: {item.category?.name ?? 'unknown'}</p>
 			</CardContent>
 		</Card>
 	);

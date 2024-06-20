@@ -11,6 +11,9 @@ export const itemRouter = createTRPCRouter({
 	getAll: publicProcedure.query(({ ctx }) => {
 		return ctx.db.query.items.findMany({
 			orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+			with: {
+				category: true,
+			}
 		});
 	}),
 

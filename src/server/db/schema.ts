@@ -69,6 +69,9 @@ export const categoriesRelations = relations(categories, ({ many }) => ({
 }));
 
 export type ItemEntity = typeof items.$inferSelect;
+export type ItemWithCategoryEntity = typeof items.$inferSelect & {
+	category: CategoryEntity | null;
+};
 
 export const users = createTable("user", {
 	id: text("id")
