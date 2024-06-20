@@ -41,7 +41,7 @@ import { useState } from 'react';
 const formSchema = z.object({
 	name: z.string().min(2).max(50),
 	parentId: z.number().optional(),
-})
+});
 
 export function CategoriesTable({
 	categories,

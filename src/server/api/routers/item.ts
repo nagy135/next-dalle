@@ -18,4 +18,14 @@ export const itemRouter = createTRPCRouter({
 		return ctx.db.delete(items).where(eq(items.id, input));
 	}),
 
+	create: protectedProcedure.input(z.object({
+		name: z.string(),
+		categoryId: z.number(),
+	})).mutation(({ ctx, input }) => {
+		return ctx.db.insert(items).values({
+			name: input.name,
+			categoryId: input.categoryId,
+		});
+	}),
+
 });

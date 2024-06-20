@@ -17,3 +17,8 @@ export async function createCategory(name: string, parentId?: number) {
 	await api.category.create({ name, parentId });
 	revalidatePath('/');
 }
+
+export async function createItem(name: string, categoryId: number) {
+	await api.item.create({ name, categoryId });
+	revalidatePath('/');
+}
