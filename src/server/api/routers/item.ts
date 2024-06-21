@@ -8,9 +8,17 @@ import {
 import { items } from "~/server/db/schema";
 
 export const itemRouter = createTRPCRouter({
-	getAll: publicProcedure.query(({ ctx }) => {
+	getN: publicProcedure.input(
+		z.number().default(5)
+	).query(({ ctx, input }) => {
 		return ctx.db.query.items.findMany({
 			orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+			with: {
+				category: true,
+			},
+			limit: input
+		});
+	}),
 			with: {
 				category: true,
 			}
