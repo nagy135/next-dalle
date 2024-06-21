@@ -62,8 +62,8 @@ export default function Navigation({ categories }: NavigationProps) {
 	return (
 		<NavigationMenu>
 			<NavigationMenuList>
-				{categories.map((category) => (
-					<NavigationMenuItem>
+				{categories.map((category, i) => (
+					<NavigationMenuItem key={`navigation-menu-item-${i}`}>
 						<NavigationMenuTrigger>{category.name}</NavigationMenuTrigger>
 						<NavigationMenuContent>
 							<ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
