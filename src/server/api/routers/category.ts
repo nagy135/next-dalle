@@ -14,6 +14,19 @@ export const categoryRouter = createTRPCRouter({
 		});
 	}),
 
+	getNWithChildren: publicProcedure.input(
+		z.number().default(3)
+	)
+		.query(({ ctx, input }) => {
+			return ctx.db.query.categories.findMany({
+				orderBy: (posts, { desc }) => [desc(posts.createdAt)],
+				limit: input,
+				with: {
+					children: true,
+				},
+			});
+		}),
+
 	deleteById: protectedProcedure.input(z.number()).mutation(({ ctx, input }) => {
 		return ctx.db.delete(categories).where(eq(categories.id, input));
 	}),

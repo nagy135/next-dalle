@@ -19,6 +19,10 @@ export const itemRouter = createTRPCRouter({
 			limit: input
 		});
 	}),
+
+	getByCategoryId: publicProcedure.input(z.number()).query(({ ctx, input }) => {
+		return ctx.db.query.items.findMany({
+			where: eq(items.categoryId, input),
 			with: {
 				category: true,
 			}

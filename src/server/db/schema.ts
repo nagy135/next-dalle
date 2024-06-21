@@ -11,12 +11,6 @@ import {
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
 export const createTable = pgTableCreator((name) => `next-shop_${name}`);
 
 export const items = createTable(
@@ -41,7 +35,8 @@ export const categories = createTable(
 	"category",
 	{
 		id: serial("id").primaryKey(),
-		name: varchar("name", { length: 256 }),
+		name: varchar("name", { length: 256 }).notNull(),
+		description: text("description"),
 
 		parentId: integer("categoryId"),
 
@@ -56,6 +51,9 @@ export const categories = createTable(
 );
 
 export type CategoryEntity = typeof categories.$inferSelect;
+export type CategoryWithChildrenEntity = typeof categories.$inferSelect & {
+	children?: CategoryEntity[];
+};
 
 export const itemsRelations = relations(items, ({ one }) => ({
 	category: one(categories, {
@@ -65,7 +63,20 @@ export const itemsRelations = relations(items, ({ one }) => ({
 }))
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
-	items: many(items)
+	items: many(items),
+}));
+
+export const categoriesChildrenRelation = relations(categories, ({ many }) => ({
+	children: many(categories, { relationName: 'childcategories' })
+}));
+
+
+export const childArticleRelation = relations(categories, ({ one }) => ({
+	parent: one(categories, {
+		fields: [categories.parentId],
+		references: [categories.id],
+		relationName: 'childcategories'
+	})
 }));
 
 export type ItemEntity = typeof items.$inferSelect;
