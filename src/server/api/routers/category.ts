@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, isNull } from "drizzle-orm";
 import { z } from "zod";
 import {
 	createTRPCRouter,
@@ -24,6 +24,7 @@ export const categoryRouter = createTRPCRouter({
 				with: {
 					children: true,
 				},
+				where: isNull(categories.parentId),
 			});
 		}),
 
