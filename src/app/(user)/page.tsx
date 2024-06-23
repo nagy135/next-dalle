@@ -1,5 +1,5 @@
 import { api } from "~/trpc/server";
-import ItemCard from "./_components/item-card";
+import ItemCard from "../_components/item-card";
 
 export default async function Home() {
 	const items = await api.item.getN();

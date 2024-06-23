@@ -6,8 +6,6 @@ import { TRPCReactProvider } from "~/trpc/react";
 
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "~/lib/utils";
-import Navigation from "./_components/navigation";
-import { api } from "~/trpc/server";
 
 export const metadata = {
 	title: "Create T3 App",
@@ -25,7 +23,6 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	const navigationCategories = await api.category.getNWithChildren(5);
 	return (
 		<html lang="en" className={`${GeistSans.variable}`}>
 			<body
@@ -36,7 +33,6 @@ export default async function RootLayout({
 			>
 				<TRPCReactProvider>
 					<>
-						<Navigation categories={navigationCategories} />
 						{children}
 					</>
 				</TRPCReactProvider>
