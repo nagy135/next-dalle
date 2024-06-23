@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "~/components/ui/button";
 import {
 	Sheet,
 	SheetContent,
@@ -11,7 +10,6 @@ import {
 } from "~/components/ui/sheet"
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { useState } from "react";
 
 const links = [
 	{
@@ -27,13 +25,10 @@ const links = [
 ];
 
 export default function Sidebar() {
-	const [open, setOpen] = useState(false);
 	return (
-		<Sheet open={open}>
-			<SheetTrigger asChild>
-				<Button onClick={() => setOpen(!open)}>
-					<HamburgerMenuIcon />
-				</Button>
+		<Sheet>
+			<SheetTrigger>
+				<HamburgerMenuIcon />
 			</SheetTrigger>
 			<SheetContent side={"left"}>
 				<SheetHeader>
@@ -42,11 +37,11 @@ export default function Sidebar() {
 						<div className="flex-col gap-3">
 							{links.map((link, i) => (
 								<div key={`link-${i}`}>
-									<Link className="text-lg text-black font-bold" href={link.href} >
-										<Button onClick={() => setOpen(!open)} variant="ghost">
+									<SheetTrigger asChild>
+										<Link className="text-lg text-black font-bold" href={link.href} >
 											<span className="pr-2">{link.icon}</span>	{link.text}
-										</Button>
-									</Link>
+										</Link>
+									</SheetTrigger>
 								</div>
 							))}
 						</div>
